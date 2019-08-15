@@ -18,6 +18,7 @@ import org.apache.spark.sql.Row;
 public class LoaderWriter
 {
 	private static final String APPLICATION_NAME = "SparkSubscale";
+	private static final int EXPECTED_ARGS_NUMBER = 6;
 
 	/**
 	 * Main entry point for the driver.
@@ -30,15 +31,18 @@ public class LoaderWriter
 	public static void main(String[] args)
 	{
 		if (!checkInputParameters(args)) {
-			System.out.println("There have to be 5 command line input parameters");
-			// indicate unsuccessful termination
+			System.out.println(
+				"There have to be "
+				+ EXPECTED_ARGS_NUMBER
+				+ " command line input parameters");
+			// Indicate unsuccessful termination.
 			System.exit(1);
 		}
 
-		// Setup spark context objects
+		// Setup spark context objects.
 		SparkObjects sparkObjects = new SparkObjects(APPLICATION_NAME);
 
-		// Load data
+		// Load data from HDFS.
 		Dataset<Row> dataset = DataFactory.sample1(sparkObjects).provideData();
 	}
 
@@ -51,7 +55,7 @@ public class LoaderWriter
 	 */
 	private static boolean checkInputParameters(String[] args)
 	{
-		if (args.length != 6)
+		if (args.length != EXPECTED_ARGS_NUMBER)
 		{
 			return false;
 		}

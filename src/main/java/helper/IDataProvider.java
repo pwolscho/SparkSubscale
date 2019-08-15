@@ -18,7 +18,7 @@ public interface IDataProvider
 	/**
 	 * Provides data by reading it from HDFS.
 	 *
-	 * @return
+	 * @return Loaded data from HDFS.
 	 */
     Dataset<Row> provideData();
 }

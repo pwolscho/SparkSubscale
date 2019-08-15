@@ -31,24 +31,26 @@ class DataProvider implements IDataProvider
 	/**
 	 * Provides data by reading it from HDFS.
 	 *
+	 * ToDo: Calculate numberOfColumns of csv file.
+	 *
 	 * @return Loaded data from HDFS.
 	 */
 	public Dataset<Row> provideData()
 	{
 		Dataset<Row> dataset = options.getSparkObjects().getSparkSession().read()
 			.option("delimiter", options.getDelimiter())
-			.schema(buildSchema(options.getNumberOfColumns()))
+			.schema(createSchema(options.getNumberOfColumns()))
 			.csv(options.getFilePath());
 
 		return dataset;
 	}
 
     /**
-     * Builds a schema according to the sample file to load.
+     * Creates a schema according to the sample file to load.
      *
      * @return Schema with double type for all columns.
      */
-	private String buildSchema(int numberOfColumns)
+	private String createSchema(int numberOfColumns)
 	{
 		String schema = "";
 
@@ -57,6 +59,7 @@ class DataProvider implements IDataProvider
 			schema += i + " DOUBLE, ";
 		}
 
+		// Subtract 2 to delete comma and space at the end of the schema.
 		return schema.substring(0, schema.length() - 2);
 	}
 }
